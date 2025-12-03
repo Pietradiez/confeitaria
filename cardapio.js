@@ -25,10 +25,31 @@ function criarItemCardapio(titulo){
 }
 // executando a função
 
-criarItemCardapio (
-    'Bolo de Chocolate'
-    'Um classico com camadas de Chocolate'
-    
 
 
-)
+async function buscarBolos() {
+  const url = "https://confeitaria-api-8c7e.onrender/cardapio";
+
+  try {
+    const resposta = await fetch(url);
+
+    if (!resposta.ok) {
+      throw new Error("Erro na requisição: " + resposta.status);
+    }
+
+    const dados = await resposta.json(); // Converte para JSON
+    console.log("Lista de bolos recebida:", dados);
+    criarItemCardapio (
+    dados.titulo,dados.pDescricao,dados.img
+
+    )
+    return dados;
+
+  } catch (erro) {
+    console.error("Erro ao buscar os bolos:", erro);
+    return null;
+  }
+}
+
+// Chamada da função
+buscarBolos();
